@@ -63,11 +63,35 @@ try {
 
 const sewNewProduct = async (req, res)=>{
     try {
+        
+        console.log(req.file.path);
         const newProduct = new Product(req.body);
+
+        if(req.file.path){
+            newProduct.image= req.file.path;
+        }
         const createProduct = await newProduct.save();
         return res.status(200).json(createProduct);
     } catch (error) {
         return res.status(500).json(err);
+    }
+};
+
+const  sewNewProductMultiImage = async (req, res)=>{
+    try {
+        console.log(req.files);
+        const newProduct = new Product(req.body);
+        
+        if(req.files.image){
+           newProduct.image= req.files.image[0].path;
+        }
+        if(req.files.image2){
+            newProduct.image2= req.files.image2[0].path;
+        }
+        const createProduct = await newProduct.save();
+        return res.status(200).json(createProduct);
+    } catch (error) {
+        return res.status(500).json(error);
     }
 };
 
@@ -99,4 +123,4 @@ const  deleteProduct =  async (req,res)=>{
 }
 
 
-module.exports = {getProducts, getProductsId, getTipe, getColor, getTemporate, sewNewProduct, updateProduct, deleteProduct};
+module.exports = {getProducts, getProductsId, getTipe, getColor, getTemporate, sewNewProduct,sewNewProductMultiImage, updateProduct, deleteProduct};
