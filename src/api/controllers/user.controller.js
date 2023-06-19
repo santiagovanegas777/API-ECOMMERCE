@@ -69,7 +69,7 @@ const logoutUser = (req, res) =>{};
 
 const getAllUsers = async (req,res)=>{
     try {
-        const allUsers = await User.find();
+        const allUsers = await User.find().populate("product");
         return res.json(allUsers);
     } catch (error) {
         return res.status(500).json(error);
